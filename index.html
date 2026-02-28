@@ -4,20 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Ashlesha | A Special Surprise</title>
+    <title>Happy Birthday Aarohi | A Special Surprise</title>
 
+    <!-- Fonts: Playfair Display (Elegant) & Montserrat (Modern) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
 
+    <!-- GSAP CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* --- RESET & VARIABLES --- */
         :root {
             --bg-dark: #0f0c29;
             --bg-gradient: linear-gradient(to right, #24243e, #302b63, #0f0c29);
@@ -44,6 +48,7 @@
             min-height: 100vh;
         }
 
+        /* --- BACKGROUND PARTICLES (CANVAS) --- */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -54,6 +59,7 @@
             pointer-events: none;
         }
 
+        /* --- PAGE 1: INTRO SECTION --- */
         #intro-screen {
             height: 100vh;
             width: 100%;
@@ -67,6 +73,7 @@
             left: 0;
             z-index: 100;
             background: var(--bg-dark);
+            /* Initial solid background */
             background-image: radial-gradient(circle at center, #302b63 0%, #0f0c29 70%);
         }
 
@@ -82,6 +89,7 @@
             color: var(--gold);
             text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
             min-height: 4.5rem;
+            /* Prevent layout shift */
             display: inline-block;
         }
 
@@ -102,9 +110,11 @@
             max-width: 600px;
             padding: 0 20px;
             opacity: 0;
+            /* Hidden initially for GSAP */
             transform: translateY(20px);
         }
 
+        /* --- PAGE 2: MAIN CONTENT --- */
         #main-content {
             position: relative;
             z-index: 10;
@@ -137,6 +147,7 @@
             border-radius: 2px;
         }
 
+        /* --- MUSIC GRID --- */
         .music-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -192,6 +203,7 @@
             color: rgba(255, 255, 255, 0.8);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
+            /* Let clicks pass to card */
         }
 
         .music-card:hover .play-icon {
@@ -201,6 +213,18 @@
         .music-card.playing {
             border-color: var(--gold);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .music-card.playing .play-icon {
+            content: "\f04c";
+            /* FontAwesome pause would go here via JS toggle */
+            transform: translate(-50%, -50%) scale(1);
+            color: var(--gold);
+        }
+
+        /* --- GALLERY GRID --- */
+        .gallery-container {
+            position: relative;
         }
 
         .gallery-grid {
@@ -216,6 +240,7 @@
             height: 400px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             cursor: crosshair;
+            /* opacity: 0;  REMOVED THIS LINE TO FIX INVISIBLE IMAGES */
         }
 
         .gallery-item img {
@@ -263,6 +288,25 @@
             transform: translateY(0);
         }
 
+        /* --- FLOATING ELEMENTS & EXTRAS --- */
+        .floating-heart {
+            position: fixed;
+            color: rgba(183, 110, 121, 0.4);
+            font-size: 20px;
+            z-index: 5;
+            pointer-events: none;
+            animation: floatUp 10s linear infinite;
+        }
+
+        .confetti-side {
+            position: absolute;
+            top: 0;
+            width: 50px;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
         footer {
             text-align: center;
             padding: 40px;
@@ -271,6 +315,7 @@
             margin-top: 4rem;
         }
 
+        /* --- ANIMATIONS --- */
         @keyframes blink {
 
             0%,
@@ -283,29 +328,28 @@
             }
         }
 
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            #intro-screen {
-                padding-left: 18px;
-                padding-right: 18px;
-            }
-
-            #main-content {
-                padding-left: 28px;
-                padding-right: 28px;
-            }
-
-            .gallery-grid {
-                gap: 18px;
-            }
-
-            .music-grid {
-                gap: 20px;
-            }
-
-            .music-card {
-                padding: 18px;
-            }
-
             .main-title {
                 font-size: 2rem;
                 height: 3rem;
@@ -328,23 +372,29 @@
 
 <body>
 
+    <!-- Canvas for Starry Background -->
     <canvas id="particle-canvas"></canvas>
 
+    <!-- INTRO PAGE -->
     <div id="intro-screen">
         <div class="title-container">
             <span id="typing-target" class="main-title"></span><span class="cursor"></span>
         </div>
         <div class="quote-container">
-            Count your life by smiles, not tears. Count your age by memories, not years.Happy Birthday, Ashlesha Thakur may your grace shine brighter with every smile. ✨🎂
+            Count your life by smiles, not tears. Count your age by memories, not years.Happy Birthday, Aarohi may your
+            grace shine brighter with every smile. ✨🎂
         </div>
     </div>
 
+    <!-- MAIN CONTENT (Hidden Initially) -->
     <div id="main-content">
 
+        <!-- MUSIC SECTION -->
         <h2 class="section-title">Melodies for You</h2>
         <div class="music-grid">
+            <!-- Song 1 -->
             <div class="music-card" onclick="playAudio('audio1', this)">
-                <img src="/New folder/Raabta.avif" class="music-thumb">
+                <img src="/New folder/Raabta.avif" alt="Party" class="music-thumb">
                 <div class="music-info">
                     <h3>Raabta</h3>
                     <p>Arijit Singh</p>
@@ -353,28 +403,32 @@
                 <audio id="audio1" src="song/Raabta - Arijit Singh _ Agent Vinod _ Hindi.mp3"></audio>
             </div>
 
+            <!-- Song 2 -->
             <div class="music-card" onclick="playAudio('audio2', this)">
-                <img src="New folder/satranga.avif" class="music-thumb">
+                <img src="New folder/satranga.avif" alt="Piano" class="music-thumb">
                 <div class="music-info">
-                    <h3>Satranga</h3>
+                    <h3>satranga</h3>
                     <p>Arijit Singh</p>
                 </div>
                 <i class="fas fa-play play-icon"></i>
                 <audio id="audio2" src="song/satranga.mp3"></audio>
+                <!-- Note: Using placeholder audio, title implies mood -->
             </div>
 
+            <!-- Song 3 -->
             <div class="music-card" onclick="playAudio('audio3', this)">
-                <img src="New folder/tera_yaar_hoon.avif" class="music-thumb">
+                <img src="New folder/tera_yaar_hoon.avif" alt="Music" class="music-thumb">
                 <div class="music-info">
-                    <h3>Tera Yaar Hoon</h3>
+                    <h3>tera yaar hoon</h3>
                     <p>Arijit Singh</p>
                 </div>
                 <i class="fas fa-play play-icon"></i>
                 <audio id="audio3" src="song/tera_yaar_hoon_main.mp3"></audio>
             </div>
 
+            <!-- Song 4 -->
             <div class="music-card" onclick="playAudio('audio4', this)">
-                <img src="New folder/Tum Hi Ho Song.avif" class="music-thumb">
+                <img src="New folder/Tum Hi Ho Song.avif" alt="Night" class="music-thumb">
                 <div class="music-info">
                     <h3>Tum Hi Ho</h3>
                     <p>Arijit Singh</p>
@@ -384,47 +438,62 @@
             </div>
         </div>
 
+        <!-- GALLERY SECTION -->
         <h2 class="section-title">Memories Gallery</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="./New folder/1.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">You light up every moment 💖</div>
+        <div class="gallery-container">
+            <div class="gallery-grid">
+                <!-- Photo 1 -->
+                <div class="gallery-item left-entry">
+                    <img src="https://images.unsplash.com/photo-1660234396354-c69fe0c17886?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 1">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">You light up every moment 💖</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="gallery-item">
-                <img src="./New folder/2.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">Your smile makes everything brighter ✨</div>
+                <!-- Photo 2 -->
+                <div class="gallery-item scale-entry">
+                    <img src="https://images.unsplash.com/photo-1660234395849-5c11ef7c7e6b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 2">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">Your smile makes everything brighter ✨</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="gallery-item">
-                <img src="./New folder/3.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">Today is all about YOU 🎂</div>
+                <!-- Photo 3 -->
+                <div class="gallery-item right-entry">
+                    <img src="https://images.unsplash.com/photo-1660234396480-350a918bd937?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 3">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">Today is all about YOU 🎂</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="gallery-item">
-                <img src="./New folder/4.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">Elegance is your middle name 👑</div>
+                <!-- Photo 4 -->
+                <div class="gallery-item left-entry">
+                    <img src="https://images.unsplash.com/photo-1660234395663-893a194775f1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 4">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">Elegance is your middle name 👑</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="gallery-item">
-                <img src="./New folder/5.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">Keep shining, Star! 🌟</div>
+                <!-- Photo 5 -->
+                <div class="gallery-item scale-entry">
+                    <img src="https://images.unsplash.com/photo-1660234395850-4b75a2f67bfe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 5">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">Keep shining, Star! 🌟</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="gallery-item">
-                <img src="./New folder/1.png">
-                <div class="gallery-overlay">
-                    <div class="overlay-text">Cheers to another great year 🥂</div>
+                <!-- Photo 6 -->
+                <div class="gallery-item right-entry">
+                    <img src="https://images.unsplash.com/photo-1660234396396-c7c012c8f657?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGJpcnRoZGF5JTIwZ2lybHxlbnwwfHwwfHx8MA%3D%3D"
+                        alt="AVL 6">
+                    <div class="gallery-overlay">
+                        <div class="overlay-text">Cheers to another great year 🥂</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -436,6 +505,5 @@
 
     <script src="script.js"></script>
 </body>
-
 
 </html>
